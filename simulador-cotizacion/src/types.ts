@@ -6,28 +6,16 @@
 export interface Product {
   id: string;
   name: string;
-  category: string; // p. ej. "Hogar", "Cocina", "Jardín"
-  price: number; // precio unitario
-  promotion?: "3x2"; // tipo de promoción (opcional)
+  category: string;
+  price: number;
+  promotion?: "3x2";
 }
 
-/**
- * Elemento agregado al carrito, con cálculos de línea
- */
 export interface CartItem {
-  product: Product; // el producto seleccionado
-  quantity: number; // cantidad elegida
-  lineTotal: number; // precio neto = quantity * product.price – lineDiscount
-  lineDiscount: number; // ahorro aplicado por promoción
-}
-
-/**
- * Props del componente CategoryFilter
- */
-export interface CategoryFilterProps {
-  categories: string[]; // lista de todas las categorías disponibles
-  selected: string; // categoría actualmente seleccionada
-  onChange: (newCat: string) => void;
+  product: Product;
+  quantity: number;
+  lineTotal: number;
+  lineDiscount: number;
 }
 
 /**

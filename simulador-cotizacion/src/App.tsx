@@ -1,38 +1,25 @@
-// src/App.tsx
 import { useState, useMemo } from "react";
-import CategoryFilter from "./components/CategoryFilter";
-import ProductList from "./components/ProductList";
 import QuoteSummary from "./components/QuoteSummary";
+import CategorySection from "./components/CategorySection";
 import { PRODUCTS } from "./data/products";
-import type { Product } from "./data/products";
 import type { CartItem } from "./types";
 
+const CATEGORIES = ["Hogar", "Cocina", "Jardín", "Tecnología"];
+
 function App() {
-  // Estados principales
-  const [selectedCategory, setSelectedCategory] = useState<string>("Todas");
   const [cart, setCart] = useState<CartItem[]>([]);
 
-  // Filtrar productos según categoría
-  const filteredProducts = useMemo<Product[]>(
-    () =>
-      PRODUCTS.filter(
-        (p) => selectedCategory === "Todas" || p.category === selectedCategory
-      ),
-    [selectedCategory]
-  );
-
-  // Función para calcular un CartItem con promoción aplicada
-  function calculateCartItem(product: Product, quantity: number): CartItem {
-    let freeItems = 0;
-    if (product.promotion === "3x2") {
-      freeItems = Math.floor(quantity / 3);
-    }
+  function calculateCartItem(
+    product: (typeof PRODUCTS)[number],
+    quantity: number
+  ): CartItem {
+    const freeItems =
+      product.promotion === "3x2" ? Math.floor(quantity / 3) : 0;
     const lineDiscount = freeItems * product.price;
     const lineTotal = quantity * product.price - lineDiscount;
     return { product, quantity, lineTotal, lineDiscount };
   }
 
-  // Manejador de "Agregar al carrito"
   function handleAdd(productId: string, qty: number) {
     const product = PRODUCTS.find((p) => p.id === productId);
     if (!product) return;
@@ -40,10 +27,10 @@ function App() {
     setCart((prev) => {
       const exists = prev.find((item) => item.product.id === productId);
       if (exists) {
-        const newQty = exists.quantity + qty;
+        const updatedQty = exists.quantity + qty;
         return prev.map((item) =>
           item.product.id === productId
-            ? calculateCartItem(product, newQty)
+            ? calculateCartItem(product, updatedQty)
             : item
         );
       }
@@ -51,12 +38,10 @@ function App() {
     });
   }
 
-  // Manejador de eliminar del carrito
   function handleRemove(productId: string) {
     setCart((prev) => prev.filter((item) => item.product.id !== productId));
   }
 
-  // Cálculos de totales
   const subtotal = useMemo(
     () => cart.reduce((sum, i) => sum + i.product.price * i.quantity, 0),
     [cart]
@@ -75,18 +60,8 @@ function App() {
         </h1>
       </header>
 
-      <CategoryFilter
-        categories={["Todas", "Hogar", "Cocina", "Jardín", "Tecnología"]}
-        selected={selectedCategory}
-        onChange={setSelectedCategory}
-      />
-
-      <div className="flex flex-col lg:flex-row gap-6">
-        <section className="flex-1">
-          <ProductList products={filteredProducts} onAdd={handleAdd} />
-        </section>
-
-        <aside className="w-full lg:w-1/3">
+      <div className="flex flex-col-reverse lg:flex-row gap-6">
+        <aside className="w-full lg:w-1/3 order-first lg:order-none">
           <QuoteSummary
             items={cart}
             subtotal={subtotal}
@@ -95,6 +70,17 @@ function App() {
             onRemove={handleRemove}
           />
         </aside>
+
+        <main className="flex-1 space-y-8">
+          {CATEGORIES.map((cat) => (
+            <CategorySection
+              key={cat}
+              category={cat}
+              products={PRODUCTS.filter((p) => p.category === cat)}
+              onAdd={handleAdd}
+            />
+          ))}
+        </main>
       </div>
     </div>
   );

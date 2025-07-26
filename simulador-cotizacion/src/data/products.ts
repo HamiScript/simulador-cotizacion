@@ -1,15 +1,13 @@
 // src/data/products.ts
 
-// Define el tipo Product para garantizar la forma de cada artículo
 export interface Product {
   id: string;
   name: string;
   category: string;
-  price: number; // Precio unitario
-  promotion?: "3x2"; // Opcional, por ejemplo promoción 3x2
+  price: number;
+  promotion?: "3x2";
 }
 
-// Array de ejemplo con varios productos separados por categoría
 export const PRODUCTS: Product[] = [
   {
     id: "p1",
@@ -47,6 +45,19 @@ export const PRODUCTS: Product[] = [
     name: "Regadera de Metal",
     category: "Jardín",
     price: 12.0,
+    promotion: "3x2",
+  },
+  {
+    id: "p7",
+    name: "Auriculares Bluetooth",
+    category: "Tecnología",
+    price: 60.0,
+  },
+  {
+    id: "p8",
+    name: "Smartwatch Deportivo",
+    category: "Tecnología",
+    price: 80.0,
     promotion: "3x2",
   },
 ];

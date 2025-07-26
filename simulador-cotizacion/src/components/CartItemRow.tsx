@@ -1,4 +1,3 @@
-/* src/components/CartItemRow.tsx */
 import type { CartItem } from "../types";
 
 interface CartItemRowProps {

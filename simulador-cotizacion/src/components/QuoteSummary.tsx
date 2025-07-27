@@ -18,7 +18,7 @@ function QuoteSummary({
   onRemove,
 }: QuoteSummaryProps) {
   return (
-    <div className="bg-white rounded-xl shadow p-4 space-y-4">
+    <div className="bg-white rounded-2xl shadow-xl p-5 text-sm space-y-4">
       <h2 className="text-xl font-semibold">Detalle de Cotización</h2>
       {items.length === 0 ? (
         <p className="text-gray-600">No hay productos agregados.</p>

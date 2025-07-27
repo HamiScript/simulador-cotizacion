@@ -3,8 +3,7 @@ import QuoteSummary from "./components/QuoteSummary";
 import CategorySection from "./components/CategorySection";
 import { PRODUCTS } from "./data/products";
 import type { CartItem } from "./types";
-
-const CATEGORIES = ["Hogar", "Cocina", "Jardín", "Tecnología"];
+import CATEGORIES from "./data/categories";
 
 function App() {
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -53,24 +52,25 @@ function App() {
   const total = subtotal - totalDiscount;
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <header className="mb-6">
-        <h1 className="text-3xl font-bold text-red-600">
-          Minimarket Las Lomas
-        </h1>
+    <div className="min-h-screen bg-neutral-50 p-6 font-sans text-gray-700">
+      <header className="bg-red-600 text-white py-4 px-6 shadow-md mb-6 flex items-center justify-between rounded-lg">
+        <div className="flex items-center gap-3">
+          <img
+            src="../public/logo.png"
+            alt="Logo"
+            className="w-12 h-12 rounded-full object-cover"
+          />
+          <h1 className="text-2xl font-bold tracking-wide">
+            Minimarket Las Lomas
+          </h1>
+        </div>
+        <div className="text-sm md:text-base font-medium">
+          Total: <span className="font-bold">${total.toFixed(2)}</span>
+        </div>
       </header>
 
-      <div className="flex flex-col-reverse lg:flex-row gap-6">
-        <aside className="w-full lg:w-1/3 order-first lg:order-none">
-          <QuoteSummary
-            items={cart}
-            subtotal={subtotal}
-            discount={totalDiscount}
-            total={total}
-            onRemove={handleRemove}
-          />
-        </aside>
-
+      <div className="flex flex-col lg:flex-row gap-6">
+        {/* Contenido principal (categorías) */}
         <main className="flex-1 space-y-8">
           {CATEGORIES.map((cat) => (
             <CategorySection
@@ -81,6 +81,17 @@ function App() {
             />
           ))}
         </main>
+
+        {/* Panel lateral: carrito a la derecha */}
+        <aside className="w-full lg:w-80 bg-blue-50 p-4 rounded-xl shadow-lg h-[90vh] overflow-y-auto sticky top-4">
+          <QuoteSummary
+            items={cart}
+            subtotal={subtotal}
+            discount={totalDiscount}
+            total={total}
+            onRemove={handleRemove}
+          />
+        </aside>
       </div>
     </div>
   );

@@ -11,10 +11,10 @@ interface CategorySectionProps {
 function CategorySection({ category, products, onAdd }: CategorySectionProps) {
   return (
     <section>
-      <h2 className="text-2xl font-semibold mb-2 lowercase text-purple-600">
+      <h2 className="text-2xl font-semibold mb-2 text-red-700 flex items-center gap-2 capitalize">
         {category}
       </h2>
-      <div className="flex space-x-4 overflow-x-auto py-2 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
+      <div className="flex flex-wrap gap-4">
         {products.map((prod) => (
           <ProductCard key={prod.id} product={prod} onAdd={onAdd} />
         ))}
